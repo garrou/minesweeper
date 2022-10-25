@@ -1,0 +1,3 @@
+# minesweeper
+
+Vanilla JS minesweeper
