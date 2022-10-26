@@ -35,7 +35,7 @@ class Board {
 
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.height; j++) {
-                let minesAround = this.checkSquare(i, j);
+                const minesAround = this.checkSquare(i, j);
                 this.cells[i][j] = new Cell(i, j, minesAround, true, this.hasMines[i][j], false);
             }
         }
@@ -76,8 +76,8 @@ class Board {
 
         if (this.isBegin) {
             this.isBegin = false;
-
             while (this.cells[x][y].nbMinesAround > 0) {
+                console.log(x, y);
                 this.build();
             }
         }
@@ -87,14 +87,17 @@ class Board {
             this.isPlay = false;
         }
         if (this.cells[x][y].nbMinesAround === 0) {
-            this.show(x - 1, y - 1);
-            this.show(x - 1, y);
-            this.show(x - 1, y + 1);
-            this.show(x, y - 1);
-            this.show(x, y + 1);
-            this.show(x + 1, y - 1);
-            this.show(x + 1, y);
-            this.show(x + 1, y + 1);
+            const neighbors = [
+                { x: x - 1, y: y - 1 },
+                { x: x - 1, y: y },
+                { x: x - 1, y: y + 1 },
+                { x: x, y: y - 1 },
+                { x: x, y: y + 1 },
+                { x: x + 1, y: y - 1 },
+                { x: x + 1, y: y },
+                { x: x + 1, y: y + 1 },
+            ]
+            neighbors.forEach(obj => this.show(obj.x, obj.y));
         }
     }
 
@@ -158,7 +161,8 @@ class Board {
                 });
 
                 // On right click
-                td.addEventListener("contextmenu", () => {
+                td.addEventListener("contextmenu", (e) => {
+                    e.preventDefault();
                     if (this.isPlay && !this.isBegin && cell.isHide) {
                         cell.isFlag = !cell.isFlag;
                         this.update();
