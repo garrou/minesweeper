@@ -177,7 +177,8 @@ class Game {
         if (this.isWon()) {
             this.stopTimer();
             this.isPlay = false;
-            alert(`YOU WON ! Duration ${this.timer.textContent} seconds.`);
+            const timeContent = document.getElementById("time-counter").textContent;
+            alert(`YOU WON ! Duration ${timeContent} seconds.`);
         }
     }
 
