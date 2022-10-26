@@ -1,13 +1,32 @@
+* {
+    font-family: sans-serif;
+}
+
 .container {
     text-align: center;
 }
 
-h1 {
-    font-family: sans-serif;
+.options {
+    margin-bottom: 0.5em;
 }
 
-.options {
-    margin-bottom: 1em;
+.menu {
+    display: flex;
+    justify-content: space-around;
+    margin: 0.2em;
+}
+
+.options button {
+    padding: 0.5em;
+    border-color: #fff #7d7d7d #7d7d7d #fff;
+}
+
+.menu .counter-container {
+    align-items: center;    
+    display: inline-block;
+    color: red;
+    background-color: black;
+    padding: 0.5em;
 }
 
 .game-container {
@@ -19,13 +38,13 @@ h1 {
     cursor: pointer;
 }
 
-#grid {
+.game-container #grid {
     border-spacing: 0;
     border: 3px solid;
     border-color: #7d7d7d #fff #fff #7d7d7d;
 }
 
-.cell {
+.game-container #grid .cell {
     background: lightgrey;
     font-weight: bold;
     font-size: 15px;
@@ -37,15 +56,15 @@ h1 {
     border-left: 1px solid #7d7d7d;
 }
 
-.cell.hide:not(:active):not(.mine) {
+.game-container #grid .cell.hide:not(:active):not(.mine) {
     border: 2px solid black;
     border-color: #fff #7d7d7d #7d7d7d #fff;
 }
 
-.cell.flag {
+.game-container #grid .cell.flag {
     color: red;
 }
 
-.cell.mine:not(.hide) {
+.game-container #grid .cell.mine:not(.hide) {
     background: red;
 }

@@ -1,7 +1,9 @@
 function play(width, height, nbBombs) {
-    const board = new Board(width, height, nbBombs);
-    board.build();
-    board.update();
+    document.getElementById("time-counter").textContent = 0;
+
+    const game = new Game(width, height, nbBombs);
+    game.build();
+    game.update();
 }
 
 play(9, 9, 10);

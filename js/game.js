@@ -1,4 +1,4 @@
-class Board {
+class Game {
 
     /**
      * @param {Number} width 
@@ -6,13 +6,14 @@ class Board {
      * @param {Number} nbMines 
      */
     constructor(width, height, nbMines) {
-        this.cells = null;
-        this.hasMines = null;
         this.width = width;
         this.height = height;
         this.nbMines = nbMines;
         this.isBegin = true;
         this.isPlay = true;
+        this.cells = null;
+        this.hasMines = null;
+        this.intervalId = null;
     }
 
     /**
@@ -69,21 +70,21 @@ class Board {
         if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
             return;
         }
-
         if (!this.cells[x][y].isHide || this.cells[x][y].isFlag) {
             return;
         }
-
         if (this.isBegin) {
             this.isBegin = false;
+
             while (this.cells[x][y].nbMinesAround > 0) {
-                console.log(x, y);
                 this.build();
             }
+            this.startTimer();
         }
         this.cells[x][y].isHide = false;
 
         if (this.cells[x][y].isMine) {
+            this.stopTimer();
             this.isPlay = false;
         }
         if (this.cells[x][y].nbMinesAround === 0) {
@@ -141,9 +142,9 @@ class Board {
                 let text;
 
                 if (!this.isPlay && cell.isMine) {
-                    text = document.createTextNode("M");
+                    text = document.createTextNode("💣");
                 } else if (cell.isFlag) {
-                    text = document.createTextNode("F");
+                    text = document.createTextNode("🚩");
                 } else {
                     text = document.createTextNode(cell.isHide
                         || cell.isMine
@@ -168,12 +169,39 @@ class Board {
                         this.update();
                     }
                 });
+
+                this.getRemainingMines();
             }
         }
 
         if (this.isWon()) {
+            this.stopTimer();
             this.isPlay = false;
-            alert("YOU WON !");
+            alert(`YOU WON ! Duration ${this.timer.textContent} seconds.`);
+        }
+    }
+
+    getRemainingMines() {
+        const minesCounter = document.getElementById("mines-counter");
+        let remainingMines = 0;
+
+        for (let row of this.cells) {
+            remainingMines += row.filter(cell => cell.isFlag).length;
+        }
+        minesCounter.textContent = this.nbMines - remainingMines;
+    }
+
+    startTimer() {
+        if (this.intervalId === null) {
+            const timeCounter = document.getElementById("time-counter");
+            this.intervalId = setInterval(() => timeCounter.textContent = parseInt(timeCounter.textContent) + 1, 1000);
+        }
+    }
+
+    stopTimer() {
+        if (this.intervalId !== null) {
+            clearInterval(this.intervalId);
+            this.intervalId = undefined;
         }
     }
 }
